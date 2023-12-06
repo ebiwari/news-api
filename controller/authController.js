@@ -35,7 +35,7 @@ const register = async (req, res) => {
         articlesArticleBodyLen: -1,
         resultType: "articles",
         dataType: ["news", "pr"],
-        apiKey: "YOUR_API_KEY",
+        apiKey: "dfe96205-1ce7-4183-af73-26b8553a1256",
         forceMaxDataTimeWindow: 31,
       },
     });
@@ -64,7 +64,6 @@ const login = async (req, res) => {
   if (!user) {
     return res.status(401).json({ msg: "User does not Exist" });
   }
-  console.log(user);
 
   try {
     const match = await bcrypt.compare(password, user.password);
@@ -73,7 +72,9 @@ const login = async (req, res) => {
     }
     const token = await jwt.sign({ email: user.email }, SALT);
 
-    res.header("auth-token", token).status(201).json({ token });
+    req.user = { email: email };
+
+    return res.set("auth-token", token).status(201).json({ token });
   } catch (err) {
     return res.status(500).json(err);
   }

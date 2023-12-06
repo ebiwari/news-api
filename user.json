@@ -1,1 +1,21 @@
-[{"name":"Douebi Williams","email":"douebi@gmail.com","password":"ebiwari"},{"name":"Ebiwari Williams","email":"ebiwari@gmail.com","password":"$2b$10$DxSJBr2o5d47VYBGTnPdfuiZ9tQnQpeqOUzvgUIyFxQwf9IkMDugG"}]
+[
+  {},
+  {
+    "name": "Ebiwari Williams",
+    "email": "ebiwari@gmail.com",
+    "password": "$2b$10$fpyvTceZ8HfyEgqqnNrQRuXYhn2GO7d5omVMPhqPkLStqXv17ts36",
+    "pref": {
+      "action": "getArticles",
+      "keyword": "Ahmed tunubu",
+      "articlesPage": 1,
+      "articlesCount": 20,
+      "articlesSortBy": "date",
+      "articlesSortByAsc": false,
+      "articlesArticleBodyLen": -1,
+      "resultType": "articles",
+      "dataType": ["news", "pr"],
+      "apiKey": "dfe96205-1ce7-4183-af73-26b8553a1256",
+      "forceMaxDataTimeWindow": 31
+    }
+  }
+]

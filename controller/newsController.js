@@ -1,32 +1,37 @@
 const data = require("../user.json");
 const axios = require("axios");
+const fs = require("fs");
 
 const getConfig = (req, res) => {
+  const { user } = req;
   const pref = data.find((val) => val.email == user.email);
   if (pref) {
-    return res.stutus(201).json(pref.pref);
+    return res.status(201).json(pref.pref);
   }
+
+  return res.status(201).json({ msg: "No user exist" });
 };
 
 const config = (req, res) => {
   const { keyword, articlesPage, articlesCount } = req.body;
-  const user = data.find((val) => val.email == user.email);
+  const { user } = req;
+  const userPref = data.find((val) => val.email == user.email);
 
   if (keyword && keyword !== "") {
-    user.pref.keyword = keyword;
+    userPref.pref.keyword = keyword;
   }
 
   if (articlesPage && articlesPage !== "") {
-    user.pref.articlesPage = articlesPage;
+    userPref.pref.articlesPage = articlesPage;
   }
 
   if (articlesCount && articlesCount !== "") {
-    user.pref.articlesCount = articlesCount;
+    userPref.pref.articlesCount = articlesCount;
   }
 
-  const oldData = tasks.filter((val) => val.email === user.email);
+  const oldData = data.filter((val) => val.email !== user.email);
 
-  oldData.push(user);
+  oldData.push(userPref);
 
   fs.writeFile("./user.json", JSON.stringify(oldData), (err) => {
     if (err) {
@@ -38,17 +43,23 @@ const config = (req, res) => {
 };
 
 const news = (req, res) => {
-  const user = data.find((val) => val.email == req.user.email);
+  const { user } = req;
+  const userPref = data.find((val) => val.email == req.user.email);
 
-  // axios
-  //   .get("/http://eventregistry.org/api/v1/article/getArticles", {user.pref})
-  //   .then((resp) => {
-  //       return res.status(201).json(resp);
+  if (!userPref) {
+    return res.status(401).json({ msg: "User is not found" });
+  }
 
-  //   })
-  //   .catch(function (error) {
-  //       return res.status(500).json(err);
-  //   });
+  axios
+    .get("/http://eventregistry.org/api/v1/article/getArticles", {
+      params: userPref.pref,
+    })
+    .then((resp) => {
+      return res.status(201).json(resp);
+    })
+    .catch(function (err) {
+      return res.status(500).json(err);
+    });
 };
 
 module.exports = {
